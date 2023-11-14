@@ -12,19 +12,19 @@ function AdminRoomScreen() {
 
   const columns = [
     {
-      title: "roomid",
+      title: "Roomid",
       dataIndex: "_id",
       key: "_id",
     },
     {
-      title: "name",
+      title: "Name",
       dataIndex: "name",
       key: "name",
     },
-    { title: "maxcount", dataIndex: "maxcount", key: "maxcount" },
-    { title: "phonenumber", dataIndex: "phonenumber", key: "phonenumber" },
-    { title: "rentperday", dataIndex: "rentperday", key: "rentperday" },
-    { title: "type", dataIndex: "type", key: "type" },
+    { title: "Max count", dataIndex: "maxcount", key: "maxcount" },
+    { title: "Phone number", dataIndex: "phonenumber", key: "phonenumber" },
+    { title: "Rent /day", dataIndex: "rentperday", key: "rentperday" },
+    { title: "Type", dataIndex: "type", key: "type" },
   ];
 
   async function fetchMyData() {

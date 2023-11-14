@@ -13,10 +13,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
 .navbar {
-  background-color: black !important;
+  background: linear-gradient(to right, #3f9bf1, #4285f4); /* Gradient from blue to darker blue */
+  background-color: rgb(63, 155, 241) !important; /* Fallback color for older browsers */
+  background-size: 200% auto; /* Make the gradient wider to allow movement */
+  transition: background-position 0.3s ease; /* Add transition for smooth movement */
 }
+
+.navbar:hover {
+  background-position: 100% 0; /* Move the gradient to the end when hovering */
+}
+
 
 .nav-link {
   color: white !important;
@@ -87,7 +94,8 @@ p {
 }
 
 .landing {
-  background-color: black !important;
+  background: url('https://wallpapershome.com/images/pages/pic_h/1128.jpg') no-repeat center center fixed;
+  background-size: cover;
   height: 100vh;
   padding-top: 130px;
 }

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Modal, Button, Carousel } from "react-bootstrap";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Room({ room, fromDate, toDate }) {
   const [show, setShow] = useState(false);
@@ -16,9 +16,10 @@ function Room({ room, fromDate, toDate }) {
       <div className="col-md-7">
         <h1>{room.name}</h1>
         <b>
-          <p>Max Count : {room.maxcount}</p>
-          <p>Phone Number : {room.phonenumber}</p>
-          <p>Type : {room.type}</p>
+          <p>Max Count: {room.maxcount}</p>
+          <p>Phone Number: {room.phonenumber}</p>
+          <p>Type: {room.type}</p>
+          <p>Address: {room.address}</p>
         </b>
 
         <div style={{ float: "right" }}>
@@ -40,17 +41,11 @@ function Room({ room, fromDate, toDate }) {
         </Modal.Header>
         <Modal.Body>
           <Carousel prevLabel="" nextLabel="">
-            {room.imageurls.map((url) => {
-              return (
-                <Carousel.Item>
-                  <img
-                    className="d-block w-100 bigimg"
-                    src={url}
-                    alt="First slide"
-                  />
-                </Carousel.Item>
-              );
-            })}
+            {room.imageurls.map((url, index) => (
+              <Carousel.Item key={index}>
+                <img className="d-block w-100 bigimg" src={url} alt={`Slide ${index + 1}`} />
+              </Carousel.Item>
+            ))}
           </Carousel>
           <p>{room.description}</p>
         </Modal.Body>

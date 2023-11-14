@@ -36,6 +36,7 @@ router.post("/addroom", async (req, res) => {
   try {
     const newRoom = req.body;
     console.log(req.body);
+
     const room = new Room();
     room.name = newRoom.name;
     room.maxcount = newRoom.maxcount;
@@ -43,7 +44,9 @@ router.post("/addroom", async (req, res) => {
     room.rentperday = newRoom.rentperday;
     room.type = newRoom.type;
     room.description = newRoom.description;
+    room.address = newRoom.address; // Add the address field
     room.currentbookings = [];
+
     if (newRoom.imageurl1 && newRoom.imageurl1.length > 0) {
       room.imageurls.push(newRoom.imageurl1);
     }

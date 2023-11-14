@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Form, Input, InputNumber, Button, Select } from "antd";
-
 import Swal from "sweetalert2";
-
 import Loader from "../components/Loader";
 import Error from "../components/Error";
+
 const layout = {
   labelCol: {
     span: 4,
@@ -20,27 +19,52 @@ const tailLayout = {
     span: 16,
   },
 };
-function AdminAddRoomScreen() {
+
+const AdminAddRoomScreen = () => {
   const { Option } = Select;
 
-  const [room, setRoom] = useState({});
+  const [room, setRoom] = useState({
+    name: "",
+    description: "",
+    maxcount: 1,
+    phonenumber: "",
+    rentperday: 1,
+    imageurl1: "",
+    imageurl2: "",
+    imageurl3: "",
+    type: "",
+    address: "", // Add the address field
+  });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const [form] = Form.useForm();
 
   const onFinish = async (values) => {
-    console.log(values);
     setError("");
     setLoading(true);
+
     try {
       const data = (await axios.post("/api/rooms/addroom", values)).data;
       Swal.fire("Congratulations", "Your Room Added Successfully", "success");
       form.resetFields();
+      setRoom({
+        name: "",
+        description: "",
+        maxcount: 1,
+        phonenumber: "",
+        rentperday: 1,
+        imageurl1: "",
+        imageurl2: "",
+        imageurl3: "",
+        type: "",
+        address: "", // Reset address in the state
+      });
     } catch (error) {
       console.log(error);
-      setError(error);
-      Swal.fire("Opps", "Error:" + error, "error");
+      setError(error.message || "An error occurred");
+      Swal.fire("Opps", "Error:" + error.message || "An error occurred", "error");
     }
 
     setLoading(false);
@@ -48,22 +72,29 @@ function AdminAddRoomScreen() {
 
   const onReset = () => {
     form.resetFields();
+    setRoom({
+      name: "",
+      description: "",
+      maxcount: 1,
+      phonenumber: "",
+      rentperday: 1,
+      imageurl1: "",
+      imageurl2: "",
+      imageurl3: "",
+      type: "",
+      address: "", // Reset address in the state
+    });
   };
 
   return (
     <div className="row">
       {loading ? (
-        <Loader></Loader>
+        <Loader />
       ) : error.length > 0 ? (
-        <Error msg={error}></Error>
+        <Error msg={error} />
       ) : (
         <div className="col-md-12">
-          <Form
-            {...layout}
-            form={form}
-            name="control-hooks"
-            onFinish={onFinish}
-          >
+          <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
             <Form.Item
               name="name"
               label="name"
@@ -166,8 +197,20 @@ function AdminAddRoomScreen() {
                 <Option value="non-delux">Non-Delux</Option>
               </Select>
             </Form.Item>
+            <Form.Item
+              name="address"
+              label="Address"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter the address",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
             <Form.Item {...tailLayout}>
-              <Button type="success" htmlType="submit">
+              <Button type="primary" htmlType="submit">
                 Add
               </Button>
               <Button type="danger" htmlType="button" onClick={onReset}>
@@ -179,6 +222,6 @@ function AdminAddRoomScreen() {
       )}
     </div>
   );
-}
+};
 
 export default AdminAddRoomScreen;

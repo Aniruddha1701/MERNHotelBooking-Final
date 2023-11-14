@@ -1,47 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { Tabs } from "antd";
-import { Tag } from "antd";
+// ProfileScreen.js
 
+import React, { useEffect } from "react";
+import { Tabs, Tag, Button } from "antd";
 import MyBookingScreen from "./MyBookingScreen";
+import "./ProfileScreen.css";
+
 const { TabPane } = Tabs;
 
 function ProfileScreen() {
-  const user = JSON.parse(localStorage.getItem("currentUser"));
+  // Fetch user information from local storage
+  const user = JSON.parse(localStorage.getItem("currentUser")) || {};
 
+  // Redirect to login page if user is not authenticated
   useEffect(() => {
     if (!user) {
       window.location.href = "/login";
     }
-  }, []);
-
-  function callback(key) {
-    console.log(key);
-  }
+  }, [user]);
 
   return (
-    <div className="ml-3 mt-3">
-      <Tabs defaultActiveKey="1" onChange={callback}>
+    <div className="profile-container">
+      <Tabs defaultActiveKey="1">
+        {/* Profile Tab */}
         <TabPane tab="Profile" key="1">
-          <div className="row">
-            <div className="col-xs-12 ml-5 mb-5">
-              <div className="bs">
-                <p>My Profile</p>
-                <p>Name : {user.name}</p>
-                <p>Email : {user.email}</p>
-                <p>
-                  IsAdmin :{" "}
-                  {user.isAdmin ? (
-                    <Tag color="green">YES</Tag>
-                  ) : (
-                    <Tag color="red">NO</Tag>
-                  )}
-                </p>
-              </div>
+          <div className="profile-content">
+            <div className="profile-details">
+              <h2 className="profile-title">My Profile</h2>
+              <p className="profile-info">Name: {user.name}</p>
+              <p className="profile-info">Email: {user.email}</p>
+              {user.isAdmin && <Tag className="admin-tag">Admin</Tag>}
+              <Button
+                type="primary"
+                href={user.isAdmin ? "/admin" : "/"}
+                className="profile-button"
+              >
+                {user.isAdmin ? "Go to Admin" : "Go to Home"}
+              </Button>
             </div>
           </div>
         </TabPane>
+
+        {/* Booking Tab */}
         <TabPane tab="Booking" key="2">
-          <MyBookingScreen></MyBookingScreen>
+          <MyBookingScreen />
         </TabPane>
       </Tabs>
     </div>

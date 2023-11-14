@@ -12,16 +12,16 @@ function AdminBookingScreen() {
 
   const columns = [
     {
-      title: "transactionid",
+      title: "Transaction id",
       dataIndex: "transactionid",
       key: "transactionid",
     },
-    { title: "roomid", dataIndex: "roomid", key: "roomid" },
-    { title: "room", dataIndex: "room", key: "room" },
-    { title: "fromdate", dataIndex: "fromdate", key: "fromdate" },
-    { title: "todate", dataIndex: "todate", key: "todate" },
+    { title: "Room id", dataIndex: "roomid", key: "roomid" },
+    { title: "Room", dataIndex: "room", key: "room" },
+    { title: "From-date", dataIndex: "fromdate", key: "fromdate" },
+    { title: "To-date", dataIndex: "todate", key: "todate" },
     {
-      title: "status",
+      title: "Status",
       dataIndex: "status",
       key: "status",
       render: (status) => (
@@ -45,22 +45,24 @@ function AdminBookingScreen() {
     } catch (error) {
       console.log(error);
       setError(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   useEffect(() => {
     fetchMyData();
   }, []);
+
   return (
     <div className="row">
       {loading ? (
-        <Loader></Loader>
+        <Loader />
       ) : error.length > 0 ? (
-        <Error msg={error}></Error>
+        <Error msg={error} />
       ) : (
         <div className="col-md-12">
-          <Table columns={columns} dataSource={bookings} />
+          <Table columns={columns} dataSource={bookings} rowKey="_id" />
         </div>
       )}
     </div>

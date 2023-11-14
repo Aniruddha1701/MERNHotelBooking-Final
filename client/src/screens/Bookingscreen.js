@@ -63,7 +63,7 @@ function Bookingscreen({ match }) {
 
     try {
       setLoading(true);
-      const result = await axios.post("/api/bookings/bookroom", bookingDetails);
+      const result = await axios.post("/api/bookings/bookroom",bookingDetails);
       setLoading(false);
       Swal.fire(
         "Congratulations",
@@ -77,17 +77,6 @@ function Bookingscreen({ match }) {
       Swal.fire("Opps", "Error:" + error, "error");
     }
     setLoading(false);
-    //TESTING CARD
-    //https://stripe.com/docs/testing
-    //https://www.npmjs.com/package/react-stripe-checkout
-    // fetch("/save-stripe-token", {
-    //   method: "POST",
-    //   body: JSON.stringify(token),
-    // }).then((response) => {
-    //   response.json().then((data) => {
-    //     alert(`We are in business, ${data.email}`);
-    //   });
-    // });
   };
 
   return (
@@ -125,16 +114,25 @@ function Bookingscreen({ match }) {
               </b>
             </div>
 
-            <div style={{ float: "right" }}>
+            {/* <div style={{ float: "right" }}>
               <StripeCheckout
                 amount={totalAmount * 100}
                 currency="USD"
                 token={onToken}
-                stripeKey="YOUR PUBLIC STRIP API KEY"
+                stripeKey="pk_test_51O9WBOSIyGgiMQrLCwUPCRbY72ulPsdoF2exIkjRfhcnhxEycbPs0Q1O7L0L71OH88CrmWfznRKlPe1XtCcgoVrD002RemqUt4"
               >
                 <button className="btn btn-primary">Pay Now</button>
+
               </StripeCheckout>
-            </div>
+            </div> */}
+            <StripeCheckout
+              amount={totalAmount * 100}
+              token={onToken}
+              currency="INR"
+              stripeKey="pk_test_51O9WBOSIyGgiMQrLCwUPCRbY72ulPsdoF2exIkjRfhcnhxEycbPs0Q1O7L0L71OH88CrmWfznRKlPe1XtCcgoVrD002RemqUt4"
+            >
+              <button className="btn btn-primary">Pay Now</button>
+            </StripeCheckout>
           </div>
         </div>
       )}

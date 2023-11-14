@@ -1,4 +1,5 @@
 import React from "react";
+import "./Navbar.css"; // Import the CSS file for Navbar styles
 
 function Navbar() {
   const user = JSON.parse(localStorage.getItem("currentUser"));
@@ -11,36 +12,37 @@ function Navbar() {
   const navAction = () => {
     if (user) {
       return (
-        <ul className="navbar-nav mr-5">
-          <div className="dropdown">
-            <button
-              className="btn btn-secondary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton"
+        <ul className="navbar-nav">
+          <li className="nav-item dropdown">
+            <a
+              className="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <i class="fas fa-user mr-2"></i>
+              <i className="fas fa-user mr-2"></i>
               {user.name}
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            </a>
+            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <a className="dropdown-item" href="/profile">
                 Profile
               </a>
-
+              <div className="dropdown-divider"></div>
               <a className="dropdown-item" href="#" onClick={Logout}>
                 Logout
               </a>
             </div>
-          </div>
+          </li>
         </ul>
       );
     }
 
     return (
       <ul className="navbar-nav">
-        <li className="nav-item active">
+        <li className="nav-item">
           <a className="nav-link" href="/register">
             Register
           </a>
@@ -56,9 +58,10 @@ function Navbar() {
 
   return (
     <div>
-      <nav className="navbar navbar-expand-lg">
+      {/* Navbar with light blue background */}
+      <nav className="navbar navbar-expand-lg navbar-light custom-navbar">
         <a className="navbar-brand" href="/home">
-          MERN HOTEL BOOKING
+          Booking.com
         </a>
         <button
           className="navbar-toggler"
@@ -69,9 +72,7 @@ function Navbar() {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon">
-            <i class="fas fa-bars" style={{ color: "white" }}></i>
-          </span>
+          <span className="navbar-toggler-icon"></span>
         </button>
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">

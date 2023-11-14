@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 
-//PLEASE EDIT YOUR MONGO DB CONNECTION HERE
-/*YOU CAN FIND SAMPLE COLLECTION at mongodb_collections folder */
-var mongoURL = "mongodb+srv://hotel:2Oa8zl5pKRhPoS7g@cluster0.0svmdxs.mongodb.net/";
+var mongoURL = "mongodb+srv://ani:ani123@cluster0.lueplfp.mongodb.net/?retryWrites=true&w=majority";
 
 mongoose.connect(mongoURL, { useUnifiedTopology: true, useNewUrlParser: true });
 

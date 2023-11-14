@@ -19,6 +19,7 @@ const roomSchema = mongoose.Schema(
     currentbookings: [],
     type: { type: String, required: true },
     description: { type: String, required: true },
+    address: { type: String, required: true }, // Add the address field
   },
   { timestamps: true }
 );
