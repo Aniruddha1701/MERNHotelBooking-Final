@@ -39,16 +39,20 @@ code {
 
 .smallimg {
   height: 200px;
-  width: 100% !important;
-  border-radius: 5px !important;
+  width: 100%;
+  border-radius: 20px;
+  object-fit: contain;
 }
 
+
 h1 {
-  font-size: 20px !important;
+  font-size: 25px !important;
+  color: rgb(0, 0, 0) !important;
+  
 }
 
 .btn {
-  background-color: black !important;
+  background-color: rgb(4, 163, 255) !important;
   color: white !important;
   box-shadow: none !important;
 }
@@ -61,11 +65,12 @@ h1 {
 }
 
 .bigimg {
-  height: 400px;
-  border-radius: 5px !important;
-  /* width: 100% !important;
-  border-radius: 5px !important; */
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  object-fit: cover;
 }
+
 
 input,
 select,
@@ -79,9 +84,8 @@ select,
 }
 
 h2 {
-  font-size: 30px;
+  font-size: 20px;
   padding: 10px;
-  font-weight: bold;
   text-align: center;
 }
 
@@ -90,7 +94,7 @@ h2 {
 }
 
 p {
-  font-size: 15px !important;
+  font-size: 13px !important;
 }
 
 .landing {

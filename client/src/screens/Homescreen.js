@@ -1,20 +1,16 @@
-// Homescreen.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "antd/dist/antd.css";
 import { DatePicker } from "antd";
 import moment from "moment";
-import "./Homescreen.css";
 import Room from "../components/Room";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import "./Homescreen.css"; // Import your custom styles here
+import "./Homescreen.css";
 
-AOS.init({
-  duration: 1000,
-});
+AOS.init({ duration: 1000 });
 
 const { RangePicker } = DatePicker;
 const dateFormat = "DD-MM-YYYY";
@@ -26,27 +22,60 @@ const Homescreen = () => {
   const [fromDate, setFromDate] = useState();
   const [toDate, setToDate] = useState([]);
   const [duplicateRooms, setDuplicateRooms] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState("anywhere");
+  const [searchAddress, setSearchAddress] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
 
   useEffect(() => {
-    const fetchMyAPI = async () => {
+    const fetchRooms = async () => {
       try {
         setError("");
         setLoading(true);
-        const data = (
-          await axios.get(`/api/rooms/getallrooms?location=${selectedLocation}`)
-        ).data;
-        setRooms(data);
-        setDuplicateRooms(data);
+
+        if (!searchAddress.trim()) {
+          const response = await axios.get(`/api/rooms/getallrooms`);
+          const data = response.data;
+
+          if (data.length === 0) {
+            setError("No hotels available");
+          } else {
+            setRooms(data);
+            setDuplicateRooms(data);
+          }
+        } else {
+          const response = await axios.get(
+            `/api/rooms/getallrooms?location=${selectedLocation}`
+          );
+
+          const data = response.data;
+          if (data.length === 0) {
+            setError("No hotels available at this location");
+          } else {
+            const filteredRooms = data.filter((room) =>
+              room.address.toLowerCase().includes(searchAddress.toLowerCase())
+            );
+
+            if (filteredRooms.length === 0) {
+              setError("No hotels found for the specified address");
+            } else {
+              setRooms(filteredRooms);
+              setDuplicateRooms(filteredRooms);
+            }
+          }
+        }
       } catch (error) {
         console.error(error);
-        setError(error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
-    fetchMyAPI();
-  }, [selectedLocation]);
+    const debounceTimer = setTimeout(() => {
+      fetchRooms();
+    }, 300);
+
+    return () => clearTimeout(debounceTimer);
+  }, [selectedLocation, searchAddress]);
 
   const filterByDate = (dates) => {
     try {
@@ -54,18 +83,15 @@ const Homescreen = () => {
       setToDate(moment(dates[1]).format(dateFormat));
 
       const tempRooms = duplicateRooms.filter((room) => {
-        const availability = room.currentbookings.every((booking) => {
+        return room.currentbookings.every((booking) => {
+          const bookingStartDate = moment(booking.fromdate, dateFormat);
+          const bookingEndDate = moment(booking.todate, dateFormat);
+
           return (
-            !moment(fromDate).isBetween(booking.fromdate, booking.todate) &&
-            !moment(toDate).isBetween(booking.fromdate, booking.todate) &&
-            moment(fromDate).format(dateFormat) !== booking.fromdate &&
-            moment(fromDate).format(dateFormat) !== booking.todate &&
-            moment(toDate).format(dateFormat) !== booking.fromdate &&
-            moment(toDate).format(dateFormat) !== booking.todate
+            !moment(fromDate).isBetween(bookingStartDate, bookingEndDate, null, '[]') &&
+            !moment(toDate).isBetween(bookingStartDate, bookingEndDate, null, '[]')
           );
         });
-
-        return availability || room.currentbookings.length === 0;
       });
 
       setRooms(tempRooms);
@@ -83,11 +109,6 @@ const Homescreen = () => {
     setRooms(tempRooms);
   };
 
-  const locationOptions = [
-    { value: "anywhere", label: "Anywhere in India" },
-    // Add more location options as needed
-  ];
-
   return (
     <div className="container">
       <div className="row mt-5 bs">
@@ -95,17 +116,14 @@ const Homescreen = () => {
           <RangePicker format={dateFormat} onChange={filterByDate} />
         </div>
 
-        <div className="col-md-3 select-box">
-          <select
+        <div className="col-md-3">
+          <input
+            type="text"
             className="form-control"
-            onChange={(e) => setSelectedLocation(e.target.value)}
-          >
-            {locationOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+            placeholder="Search address"
+            value={searchAddress}
+            onChange={(e) => setSearchAddress(e.target.value)}
+          />
         </div>
 
         <div className="col-md-3 select-box">
@@ -127,7 +145,7 @@ const Homescreen = () => {
           <Error msg={error} />
         ) : (
           rooms.map((x) => (
-            <div className="col-md-9 mt-3" data-aos="flip-down" key={x.id}>
+            <div className="col-md-9 mt-3" key={x.id}>
               <Room room={x} fromDate={fromDate} toDate={toDate} />
             </div>
           ))

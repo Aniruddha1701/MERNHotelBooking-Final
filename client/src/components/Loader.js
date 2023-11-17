@@ -1,11 +1,10 @@
-// Loader.js
 import React, { useState, useEffect } from "react";
-import { PacmanLoader, HashLoader, SyncLoader } from "react-spinners";
+import { BeatLoader, BounceLoader, CircleLoader } from "react-spinners";
 import "./Loader.css";
 
-const loadingIcons = [<PacmanLoader />, <HashLoader />, <SyncLoader />];
+const loadingIcons = [<BeatLoader />, <BounceLoader />, <CircleLoader />];
 
-function Loader({ loadingText = "", delay = 500 }) {
+function Loader({ loadingText = "Loading...", delay = 500 }) {
   const [loading, setLoading] = useState(false);
   const [selectedLoader, setSelectedLoader] = useState(loadingIcons[0]);
 

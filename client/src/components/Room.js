@@ -7,19 +7,42 @@ function Room({ room, fromDate, toDate }) {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const StarRating = ({ value }) => {
+    const stars = [];
+    for (let i = 0; i < 5; i++) {
+      if (i < value) {
+        stars.push(<span key={i} style={{color: '#FFD700'}}>&#9733;</span>); // filled star
+      } else {
+        stars.push(<span key={i} style={{color: '#DDDDDD'}}>&#9733;</span>); // empty star
+      }
+    }
+    return <div style={{fontSize: '20px', display: 'inline-block'}}>{stars}</div>;
+  };
+  
+  
   return (
     <div className="row bs">
-      <div className="col-md-4">
+      <div className="col-md-2">
         <img src={room.imageurls[0]} className="smallimg" alt="" />
       </div>
-      <div className="col-md-7">
+      <div className="col-md-6">
         <h1>{room.name}</h1>
         <b>
-          <p>Max Count: {room.maxcount}</p>
-          <p>Phone Number: {room.phonenumber}</p>
-          <p>Type: {room.type}</p>
-          <p>Address: {room.address}</p>
+          {/* <p>Max Count: {room.maxcount}</p>
+          <p>Phone Number: {room.phonenumber}</p> */} 
+
+          <p>
+            <i class="fas fa-home"></i>  Type: {room.type.toUpperCase()}
+          </p>
+          <p>
+            <i class="fas fa-map-marker-alt"></i> Address: {room.address}
+          </p>
+          <p style={{ color: "green" }}>
+            <i className="fas fa-check-circle"></i> Free Cancellation
+          </p>
+          <p>
+            <i className="fas fa-wifi"></i> 24/7 WiFi Available
+          </p>
         </b>
 
         <div style={{ float: "right" }}>
@@ -36,25 +59,25 @@ function Room({ room, fromDate, toDate }) {
       </div>
 
       <Modal show={show} onHide={handleClose} size="lg">
-        <Modal.Header>
-          <Modal.Title>{room.name}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Carousel prevLabel="" nextLabel="">
-            {room.imageurls.map((url, index) => (
-              <Carousel.Item key={index}>
-                <img className="d-block w-100 bigimg" src={url} alt={`Slide ${index + 1}`} />
-              </Carousel.Item>
-            ))}
-          </Carousel>
-          <p>{room.description}</p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+  <Modal.Header closeButton>
+    <Modal.Title style={{fontFamily: 'Arial, sans-serif', color: '#333', textAlign: 'center'}}>
+      {room.name}
+    </Modal.Title>
+  </Modal.Header>
+  <Modal.Body style={{fontFamily: 'Arial, sans-serif', color: '#555'}}>
+    {room.image && <img src={room.image} alt={room.name} style={{width: '100%', height: 'auto'}} />}
+    <p>{room.description}</p>
+    <p><strong>Max Count:</strong> {room.maxcount}</p>
+    <p><strong>Phone Number:</strong> {room.phonenumber}</p>
+    <p><strong>Address:</strong> {room.address}</p>
+    <p><strong>Rating:</strong> <StarRating value={5} /></p> 
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={handleClose}>
+      Close
+    </Button>
+  </Modal.Footer>
+</Modal>
     </div>
   );
 }

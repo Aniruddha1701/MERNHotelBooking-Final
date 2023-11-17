@@ -6,6 +6,35 @@ import Swal from "sweetalert2";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
 
+function BookingDetails({ user, fromdate, todate, maxcount }) {
+  return (
+    <div style={{ textAlign: "left" }}>
+      <h1>Booking Details</h1>
+      <hr />
+      <b>
+        <p>Name : {user.name}</p>
+        <p>From Date : {fromdate}</p>
+        <p>To Date : {todate}</p>
+        <p>Max Count : {maxcount}</p>
+      </b>
+    </div>
+  );
+}
+
+function AmountDetails({ totalDays, rentperday, totalAmount }) {
+  return (
+    <div style={{ textAlign: "left" }}>
+      <h1>Amount</h1>
+      <hr />
+      <b>
+        <p>Total Days : {totalDays}</p>
+        <p>Rent per day : {rentperday}</p>
+        <p>Total Amount : {totalAmount}</p>
+      </b>
+    </div>
+  );
+}
+
 function Bookingscreen({ match }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -31,7 +60,6 @@ function Bookingscreen({ match }) {
             roomid: match.params.roomid,
           })
         ).data;
-        //console.log(data);
         setRoom(data);
       } catch (error) {
         console.log(error);
@@ -88,43 +116,21 @@ function Bookingscreen({ match }) {
       ) : (
         <div className="row justify-content-center mt-5 bs">
           <div className="col-md-6">
-            <h1>{room.name}</h1>
             <img src={room.imageurls[0]} alt="" className="bigimg" />
           </div>
           <div className="col-md-6">
-            <div style={{ textAlign: "right" }}>
-              <h1>Booking Details</h1>
-              <hr />
-              <b>
-                <p>
-                  Name : {JSON.parse(localStorage.getItem("currentUser")).name}
-                </p>
-                <p>From Date : {match.params.fromdate}</p>
-                <p>To Date : {match.params.todate}</p>
-                <p>Max Count : {room.maxcount}</p>
-              </b>
-            </div>
-            <div style={{ textAlign: "right" }}>
-              <h1>Amount</h1>
-              <hr />
-              <b>
-                <p>Total Days : {totalDays}</p>
-                <p>Rent per day : {room.rentperday}</p>
-                <p>Total Amount : {totalAmount}</p>
-              </b>
-            </div>
-
-            {/* <div style={{ float: "right" }}>
-              <StripeCheckout
-                amount={totalAmount * 100}
-                currency="USD"
-                token={onToken}
-                stripeKey="pk_test_51O9WBOSIyGgiMQrLCwUPCRbY72ulPsdoF2exIkjRfhcnhxEycbPs0Q1O7L0L71OH88CrmWfznRKlPe1XtCcgoVrD002RemqUt4"
-              >
-                <button className="btn btn-primary">Pay Now</button>
-
-              </StripeCheckout>
-            </div> */}
+            <BookingDetails
+              user={JSON.parse(localStorage.getItem("currentUser"))}
+              fromdate={match.params.fromdate}
+              todate={match.params.todate}
+              maxcount={room.maxcount}
+            />
+            <AmountDetails
+              totalDays={totalDays}
+              rentperday={room.rentperday}
+              totalAmount={totalAmount}
+            />
+            
             <StripeCheckout
               amount={totalAmount * 100}
               token={onToken}
@@ -134,6 +140,9 @@ function Bookingscreen({ match }) {
               <button className="btn btn-primary">Pay Now</button>
             </StripeCheckout>
           </div>
+          <br>
+          </br>
+          
         </div>
       )}
     </div>

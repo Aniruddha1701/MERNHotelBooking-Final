@@ -1,53 +1,69 @@
-/* Apply a reset to remove default padding and margin */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Apply a global font-family and other styles for better readability */
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
-    color: #333;
-  }
-  
-  /* Style the booking container with some padding and background color */
-  .booking-container {
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 2rem auto;
-    max-width: 600px;
-  }
-  
-  /* Use flexbox for the booking content to center align items */
-  .booking-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  /* Style the booking details and amount details */
-  .booking-details, .amount-details {
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-  
-  /* Style the Stripe button with a background color, padding, and border-radius */
-  .stripe-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  /* Add hover effect to the button */
-  .stripe-button:hover {
-    background-color: #0056b3;
-  }
-  
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
+}
+
+header {
+  background: #50b3a2;
+  color: white;
+  padding-top: 30px;
+  min-height: 70px;
+  border-bottom: #e8491d 3px solid;
+}
+
+header a {
+  color: #ffffff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+header li {
+  float: left;
+  display: inline;
+  padding: 0 20px 0 20px;
+}
+
+header #branding {
+  float: left;
+}
+
+header #branding h1 {
+  margin: 0;
+}
+
+header nav {
+  float: right;
+  margin-top: 10px;
+}
+
+header .highlight, header .current a {
+  color: #e8491d;
+  font-weight: bold;
+}
+
+header a:hover {
+  color: #cccccc;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #50b3a2;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
