@@ -62,9 +62,9 @@ const AdminAddRoomScreen = () => {
         address: "", // Reset address in the state
       });
     } catch (error) {
-      console.log(error);
-      setError(error.message || "An error occurred");
-      Swal.fire("Opps", "Error:" + error.message || "An error occurred", "error");
+      console.error(error);
+      setError(error.response?.data?.message || "An error occurred");
+      Swal.fire("Oops", `Error: ${error.response?.data?.message || "An error occurred"}`, "error");
     }
 
     setLoading(false);
@@ -97,10 +97,11 @@ const AdminAddRoomScreen = () => {
           <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
             <Form.Item
               name="name"
-              label="name"
+              label="Name"
               rules={[
                 {
                   required: true,
+                  message: "Please enter the name",
                 },
               ]}
             >
@@ -108,10 +109,11 @@ const AdminAddRoomScreen = () => {
             </Form.Item>
             <Form.Item
               name="description"
-              label="description"
+              label="Description"
               rules={[
                 {
                   required: true,
+                  message: "Please enter the description",
                 },
               ]}
             >
@@ -119,10 +121,11 @@ const AdminAddRoomScreen = () => {
             </Form.Item>
             <Form.Item
               name="maxcount"
-              label="maxcount"
+              label="Max Count"
               rules={[
                 {
                   required: true,
+                  message: "Please enter the max count",
                 },
               ]}
             >
@@ -130,10 +133,11 @@ const AdminAddRoomScreen = () => {
             </Form.Item>
             <Form.Item
               name="phonenumber"
-              label="phonenumber"
+              label="Phone Number"
               rules={[
                 {
                   required: true,
+                  message: "Please enter the phone number",
                 },
               ]}
             >
@@ -141,10 +145,11 @@ const AdminAddRoomScreen = () => {
             </Form.Item>
             <Form.Item
               name="rentperday"
-              label="rentperday"
+              label="Rent Per Day"
               rules={[
                 {
                   required: true,
+                  message: "Please enter the rent per day",
                 },
               ]}
             >
@@ -152,10 +157,11 @@ const AdminAddRoomScreen = () => {
             </Form.Item>
             <Form.Item
               name="imageurl1"
-              label="imageurl1"
+              label="Image URL 1"
               rules={[
                 {
                   required: true,
+                  message: "Please enter the image URL 1",
                 },
               ]}
             >
@@ -163,10 +169,10 @@ const AdminAddRoomScreen = () => {
             </Form.Item>
             <Form.Item
               name="imageurl2"
-              label="imageurl2"
+              label="Image URL 2"
               rules={[
                 {
-                  //required: true,
+                  // Optional rule
                 },
               ]}
             >
@@ -174,10 +180,10 @@ const AdminAddRoomScreen = () => {
             </Form.Item>
             <Form.Item
               name="imageurl3"
-              label="imageurl3"
+              label="Image URL 3"
               rules={[
                 {
-                  //required: true,
+                  // Optional rule
                 },
               ]}
             >
@@ -185,10 +191,11 @@ const AdminAddRoomScreen = () => {
             </Form.Item>
             <Form.Item
               name="type"
-              label="type"
+              label="Type"
               rules={[
                 {
                   required: true,
+                  message: "Please select the room type",
                 },
               ]}
             >

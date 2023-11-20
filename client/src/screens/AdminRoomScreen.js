@@ -1,6 +1,8 @@
+// AdminRoomScreen.jsx
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Tag, Space } from "antd";
+import { Table, Space } from "antd";
 
 import Loader from "../components/Loader";
 import Error from "../components/Error";
@@ -25,6 +27,15 @@ function AdminRoomScreen() {
     { title: "Phone number", dataIndex: "phonenumber", key: "phonenumber" },
     { title: "Rent /day", dataIndex: "rentperday", key: "rentperday" },
     { title: "Type", dataIndex: "type", key: "type" },
+    {
+      title: "Action",
+      key: "action",
+      render: (text, record) => (
+        <Space size="middle">
+          <button onClick={() => handleDelete(record._id)}>Delete</button>
+        </Space>
+      ),
+    },
   ];
 
   async function fetchMyData() {
@@ -38,6 +49,20 @@ function AdminRoomScreen() {
       setError(error);
     }
     setLoading(false);
+  }
+
+  async function handleDelete(roomId) {
+    setError("");
+    setLoading(true);
+    try {
+      await axios.post("/api/rooms/deleteroom", { roomId });
+      // After successful deletion, refresh the data
+      fetchMyData();
+    } catch (error) {
+      console.error(error);
+      setError(error);
+      setLoading(false);
+    }
   }
 
   useEffect(() => {

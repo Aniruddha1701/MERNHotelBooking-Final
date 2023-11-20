@@ -1,3 +1,5 @@
+// rooms.js (assuming your route file is named rooms.js)
+
 const express = require("express");
 const router = express.Router();
 
@@ -26,6 +28,17 @@ router.post("/getallrooms", async (req, res) => {
   try {
     const rooms = await Room.find();
     res.send(rooms);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error });
+  }
+});
+
+router.post("/deleteroom", async (req, res) => {
+  try {
+    const roomId = req.body.roomId;
+    const result = await Room.deleteOne({ _id: roomId });
+    res.send(result);
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: error });
