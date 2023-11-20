@@ -8,29 +8,47 @@ import Error from "../components/Error";
 
 function BookingDetails({ user, fromdate, todate, maxcount }) {
   return (
-    <div style={{ textAlign: "left" }}>
-      <h1>Booking Details</h1>
+    <div className="booking-details">
+      <h2>Booking Details</h2>
       <hr />
-      <b>
-        <p>Name : {user.name}</p>
-        <p>From Date : {fromdate}</p>
-        <p>To Date : {todate}</p>
-        <p>Max Count : {maxcount}</p>
-      </b>
+      <dl className="row">
+        <dt className="col-sm-4">Name:</dt>
+        <dd className="col-sm-8">{user.name}</dd>
+
+        <dt className="col-sm-4">Email:</dt>
+        <dd className="col-sm-8">{user.email}</dd>
+
+        <dt className="col-sm-4">Phone:</dt>
+        <dd className="col-sm-8">{user.phone}</dd>
+
+        <dt className="col-sm-4">From Date:</dt>
+        <dd className="col-sm-8">{fromdate}</dd>
+
+        <dt className="col-sm-4">To Date:</dt>
+        <dd className="col-sm-8">{todate}</dd>
+
+        <dt className="col-sm-4">Max Count:</dt>
+        <dd className="col-sm-8">{maxcount}</dd>
+      </dl>
     </div>
   );
 }
 
-function AmountDetails({ totalDays, rentperday, totalAmount }) {
+function AmountDetails({ totalDays, rentPerDay, totalAmount }) {
   return (
-    <div style={{ textAlign: "left" }}>
-      <h1>Amount</h1>
+    <div className="amount-details">
+      <h2>Amount</h2>
       <hr />
-      <b>
-        <p>Total Days : {totalDays}</p>
-        <p>Rent per day : {rentperday}</p>
-        <p>Total Amount : {totalAmount}</p>
-      </b>
+      <dl className="row">
+        <dt className="col-sm-4">Total Days:</dt>
+        <dd className="col-sm-8">{totalDays}</dd>
+
+        <dt className="col-sm-4">Rent per day:</dt>
+        <dd className="col-sm-8">{rentPerDay}</dd>
+
+        <dt className="col-sm-4">Total Amount:</dt>
+        <dd className="col-sm-8">{totalAmount}</dd>
+      </dl>
     </div>
   );
 }
@@ -51,7 +69,7 @@ function Bookingscreen({ match }) {
     if (!user) {
       window.location.href = "/login";
     }
-    async function fetchMyAPI() {
+    async function fetchRoomDetails() {
       try {
         setError("");
         setLoading(true);
@@ -62,20 +80,20 @@ function Bookingscreen({ match }) {
         ).data;
         setRoom(data);
       } catch (error) {
-        console.log(error);
-        setError(error);
+        console.error("Error fetching room details:", error);
+        setError("Error fetching room details");
       }
       setLoading(false);
     }
 
-    fetchMyAPI();
-  }, []);
+    fetchRoomDetails();
+  }, [match.params.roomid]);
 
   useEffect(() => {
     const totaldays = moment.duration(todate.diff(fromdate)).asDays() + 1;
     setTotalDays(totaldays);
-    setTotalAmount(totalDays * room.rentperday);
-  }, [room]);
+    setTotalAmount(totaldays * room.rentperday);
+  }, [room, fromdate, todate]);
 
   const onToken = async (token) => {
     console.log(token);
@@ -91,7 +109,7 @@ function Bookingscreen({ match }) {
 
     try {
       setLoading(true);
-      const result = await axios.post("/api/bookings/bookroom",bookingDetails);
+      const result = await axios.post("/api/bookings/bookroom", bookingDetails);
       setLoading(false);
       Swal.fire(
         "Congratulations",
@@ -101,48 +119,53 @@ function Bookingscreen({ match }) {
         window.location.href = "/home";
       });
     } catch (error) {
-      setError(error);
-      Swal.fire("Opps", "Error:" + error, "error");
+      setError("Error booking room");
+      Swal.fire("Oops", "Error booking room", "error");
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
-    <div className="m-5">
+    <div className="container mt-5">
       {loading ? (
-        <Loader></Loader>
-      ) : error.length > 0 ? (
-        <Error msg={error}></Error>
+        <Loader />
+      ) : error ? (
+        <Error msg={error} />
       ) : (
-        <div className="row justify-content-center mt-5 bs">
-          <div className="col-md-6">
-            <img src={room.imageurls[0]} alt="" className="bigimg" />
+        <div className="row justify-content-center">
+          <div className="col-md-9">
+            <div className="card booking-card">
+              <div className="card-body">
+                <h1 className="card-title">{room.name}</h1>
+                <div className="row">
+                  <div className="col-md-6">
+                    <img src={room.imageurls[0]} alt="" className="img-fluid" />
+                  </div>
+                  <div className="col-md-6">
+                    <BookingDetails
+                      user={JSON.parse(localStorage.getItem("currentUser"))}
+                      fromdate={match.params.fromdate}
+                      todate={match.params.todate}
+                      maxcount={room.maxcount}
+                    />
+                    <AmountDetails
+                      totalDays={totalDays}
+                      rentPerDay={room.rentperday}
+                      totalAmount={totalAmount}
+                    />
+                    <StripeCheckout
+                      amount={totalAmount * 100}
+                      token={onToken}
+                      currency="INR"
+                      stripeKey="pk_test_51O9WBOSIyGgiMQrLCwUPCRbY72ulPsdoF2exIkjRfhcnhxEycbPs0Q1O7L0L71OH88CrmWfznRKlPe1XtCcgoVrD002RemqUt4"
+                    >
+                      <button className="btn btn-primary mt-3">Pay Now</button>
+                    </StripeCheckout>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="col-md-6">
-            <BookingDetails
-              user={JSON.parse(localStorage.getItem("currentUser"))}
-              fromdate={match.params.fromdate}
-              todate={match.params.todate}
-              maxcount={room.maxcount}
-            />
-            <AmountDetails
-              totalDays={totalDays}
-              rentperday={room.rentperday}
-              totalAmount={totalAmount}
-            />
-            
-            <StripeCheckout
-              amount={totalAmount * 100}
-              token={onToken}
-              currency="INR"
-              stripeKey="pk_test_51O9WBOSIyGgiMQrLCwUPCRbY72ulPsdoF2exIkjRfhcnhxEycbPs0Q1O7L0L71OH88CrmWfznRKlPe1XtCcgoVrD002RemqUt4"
-            >
-              <button className="btn btn-primary">Pay Now</button>
-            </StripeCheckout>
-          </div>
-          <br>
-          </br>
-          
         </div>
       )}
     </div>
