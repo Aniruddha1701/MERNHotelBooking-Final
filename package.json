@@ -1,5 +1,12 @@
 {
+  "homepage": "http://Aniruddha1701.github.io/MERNHotelBooking-Final",
   "devDependencies": {
     "gh-pages": "^6.1.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "predeploy": "npm run build",
+    "deploy":"gh-pages -d build",
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
