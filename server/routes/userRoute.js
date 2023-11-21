@@ -1,5 +1,3 @@
-// users.js
-
 const express = require("express");
 const router = express.Router();
 
@@ -31,9 +29,9 @@ router.post("/login", async (req, res) => {
         isAdmin: user.isAdmin,
         _id: user._id,
       };
-      res.status(200).json(temp); // 200 OK status for successful login
+      res.status(200).json(temp);
     } else {
-      return res.status(401).json({ message: "Login Failed" }); // 401 Unauthorized status for failed login
+      return res.status(401).json({ message: "Login Failed" }); 
     }
   } catch (error) {
     console.error(error);
@@ -44,7 +42,7 @@ router.post("/login", async (req, res) => {
 router.get("/getallusers", async (req, res) => {
   try {
     const users = await User.find();
-    res.status(200).json(users); // 200 OK status for successful retrieval of users
+    res.status(200).json(users); 
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal Server Error", error: error.message });
@@ -81,12 +79,10 @@ router.post("/deleteuser", async (req, res) => {
   }
 });
 
-// New route for updating user information
 router.post("/updateuser", async (req, res) => {
   try {
     const { userId, name, email } = req.body;
 
-    // Validate that the required fields are provided
     if (!userId || !name || !email) {
       return res.status(400).json({ message: "Missing required fields" });
     }
