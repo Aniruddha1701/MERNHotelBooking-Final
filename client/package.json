@@ -1,4 +1,6 @@
+
 {
+  "homepage": "http://Aniruddha1701.github.io/MERNHotelBooking-Final",
   "name": "client",
   "version": "0.1.0",
   "private": true,
@@ -24,6 +26,8 @@
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
+    "predeploy": "npm run build",
+    "deploy":"gh-pages -d build",
     "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
